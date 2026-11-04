@@ -1,6 +1,6 @@
 # Answers
 
-**My variant:**
+**My variant:** `four`
 
 Answer each question in a few sentences, under the question. Put screenshots
 in a `screenshots/` folder and link them from your answers.
