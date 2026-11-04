@@ -30,6 +30,19 @@ decides that? Where does the server get `owner_id` from, and why not from the
 request body?
 
 **Answer:**
+1. Click **Create**: `handleSubmit` in `client/features/events/EventForm.tsx` stops the page reload and calls the page's `onSubmit` with the values.
+2. `onSubmit` in `client/pages/events/EventNewPage.tsx` calls `createEvent.mutate(...)` (from `useCreateEvent`).
+3. `useCreateEvent` in `client/features/events/hooks.ts` calls `api("/api/events", { method: "POST", body })`.
+4. `api()` in `client/lib/api.ts` adds the login token to the `Authorization` header and sends it with `fetch`.
+5. `server/index.ts`: `app.use("/api/*", requireAuth)` checks the token before the events routes. `requireAuth` (`server/middleware/auth.ts`) saves the user with `c.set("user", ...)`.
+6. `server/routes/events.ts`: the `POST /` route runs `validate("json", createEventSchema)` from `server/lib/errors.ts`. If the body is wrong, `failValidation` answers 400 and the route stops.
+7. Same route: inserts the row into `events` with `owner_id` from the token, and answers 201 with the new event (or 500 with `fail()` if the db fails).
+8. `supabase/migrations/20260921120000_events.sql`: the db adds `id` and `created_at` and checks the `not null` and foreign key rules.
+9. Back in `useCreateEvent`, `onSuccess` runs `invalidateQueries({ queryKey: eventKeys.all })`, so the saved list is marked old. When you open `/events`, `useEvents` fetches it again and the new event is there.
+
+Only spaces: the server answers 400 with "Please enter a title". Lines 37-38 of `shared/schemas/events.ts` decide it: `.trim()` turns the spaces into `""` and then `.min(1, "Please enter a title")` fails.
+
+`owner_id`: from `c.get("user").id` (line 113 of `server/routes/events.ts`), the user from the verified login token. Not from the body, because anyone can send any body, so they could create events as someone else. The token is signed by Supabase so it can't be faked.
 
 ## 2. The rules
 
