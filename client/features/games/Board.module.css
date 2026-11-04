@@ -1,0 +1,73 @@
+/* Lives inside a `.sky` page (client/styles/sky.module.css), which gives
+   it --color-x and --color-o. */
+
+.board {
+  /* Lets the marks size themselves from the board's width (cqi below). */
+  container-type: inline-size;
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 2px;
+  overflow: hidden;
+  border-radius: var(--radius-md);
+  /* Shows through the gaps as the grid lines. */
+  background-color: var(--color-border);
+}
+
+.cell {
+  display: grid;
+  place-items: center;
+  aspect-ratio: 1;
+  padding: 0;
+  border: 0;
+  background-color: var(--color-bg);
+  color: inherit;
+  font-size: 12cqi;
+  line-height: 1;
+}
+
+button.cell {
+  cursor: pointer;
+  transition: background-color var(--duration-fast) var(--ease-out);
+}
+
+button.cell:enabled:hover {
+  background-color: var(--color-surface);
+}
+
+button.cell:disabled {
+  cursor: default;
+}
+
+button.cell:focus-visible {
+  outline: var(--focus-ring-width) solid var(--color-accent);
+  outline-offset: calc(var(--focus-ring-width) * -1);
+}
+
+.X {
+  color: var(--color-x);
+}
+
+.O {
+  color: var(--color-o);
+}
+
+/* The winning cells glow. */
+.win {
+  background-color: var(--color-surface);
+  text-shadow: 0 0 0.4em currentColor;
+}
+
+.constellation {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.constellation line {
+  stroke: currentColor;
+  stroke-width: 3px;
+  stroke-linecap: round;
+  opacity: 0.6;
+  vector-effect: non-scaling-stroke;
+}

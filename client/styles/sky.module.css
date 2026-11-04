@@ -1,0 +1,48 @@
+/*
+  The night sky look, shared by /tic-tac-toe and /nasa.
+
+  Put `.sky` on a page's <main>. While that page is open, the whole page
+  behind it becomes a starry sky: the colour tokens from tokens.css are
+  redefined on <body>, so global.css, the footer and the kit's components
+  (Card, Button, Spinner...) all turn dark too. The derived colours are
+  repeated because they are worked out where they are declared, in :root,
+  from the light colours.
+*/
+
+:global(body):has(.sky) {
+  color-scheme: dark;
+
+  --color-bg: #0b1026;
+  --color-surface: #151b3d;
+  --color-text: #e8ebff;
+  --color-text-muted: #a3abd1;
+  --color-border: #2c3570;
+  --color-accent: #8f9dff;
+  --color-text-on-accent: #0b1026;
+  --color-danger: #ff7b72;
+
+  /* The two players: a gold star and a teal planet. */
+  --color-x: #ffd166;
+  --color-o: #5eead4;
+
+  --color-surface-hover: color-mix(in oklab, var(--color-surface), var(--color-text) 6%);
+  --color-surface-active: color-mix(in oklab, var(--color-surface), var(--color-text) 12%);
+  --color-border-strong: color-mix(in oklab, var(--color-border), var(--color-text) 18%);
+  --color-text-disabled: color-mix(in oklab, var(--color-text) 38%, var(--color-bg));
+  --color-accent-hover: color-mix(in oklab, var(--color-accent), #fff 15%);
+  --color-accent-active: color-mix(in oklab, var(--color-accent), #fff 28%);
+
+  /* A few stars, repeated across a deep blue sky. */
+  background-image:
+    radial-gradient(1px 1px at 30px 40px, #fff, transparent),
+    radial-gradient(1px 1px at 140px 90px, #ffffffb3, transparent),
+    radial-gradient(1.5px 1.5px at 210px 170px, #fff, transparent),
+    radial-gradient(1px 1px at 80px 200px, #ffffff99, transparent),
+    linear-gradient(var(--color-bg), #1b2150);
+  background-size:
+    240px 240px,
+    240px 240px,
+    240px 240px,
+    240px 240px,
+    auto;
+}

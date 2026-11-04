@@ -4,6 +4,7 @@ import type { AppEnv } from "./env";
 import { fail } from "./lib/errors";
 import { requireAuth } from "./middleware/auth";
 import { events } from "./routes/events";
+import { games } from "./routes/games";
 import { health } from "./routes/health";
 import { me } from "./routes/me";
 import { uploads } from "./routes/uploads";
@@ -32,6 +33,7 @@ app.use("/api/*", requireAuth);
 app.route("/api/me", me);
 app.route("/api/events", events);
 app.route("/api/uploads", uploads);
+app.route("/api/games", games);
 
 // Any /api/* URL we did not define above. Without this, an unknown API URL
 // would fall through and return the HTML page, which is very confusing to debug.
