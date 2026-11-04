@@ -1,0 +1,197 @@
+.page {
+  padding: var(--space-8) var(--space-4);
+}
+
+.header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--space-4);
+  margin-block-end: var(--space-6);
+}
+
+.muted {
+  color: var(--color-text-muted);
+}
+
+.error {
+  color: var(--color-danger);
+}
+
+.centered {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-3);
+  padding-block: var(--space-8);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(18rem, 1fr));
+  gap: var(--space-4);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.card {
+  overflow: hidden;
+  block-size: 100%;
+}
+
+.image {
+  display: block;
+  inline-size: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  background-color: var(--color-bg);
+}
+
+.body {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-2);
+  padding: var(--space-4);
+}
+
+.title {
+  font-size: var(--text-lg);
+}
+
+.credit {
+  color: var(--color-text-muted);
+  font-size: var(--text-xs);
+}
+
+.explanation {
+  overflow: hidden;
+  /* Closed, it shows 4 lines. Open, the page sets its full height inline,
+     and the change slides instead of jumping. */
+  max-block-size: 4lh;
+  font-size: var(--text-sm);
+  line-height: 1.6;
+  transition: max-block-size 450ms var(--ease-out);
+}
+
+/* Fades out the last line, to show there is more. */
+.closed {
+  mask-image: linear-gradient(#000 60%, transparent);
+}
+
+.chevron {
+  transition: transform 450ms var(--ease-out);
+}
+
+.flipped {
+  transform: rotate(180deg);
+}
+
+.explain {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-2);
+  margin-block-start: var(--space-2);
+}
+
+.summary {
+  line-height: 1.6;
+}
+
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.tags li {
+  padding: var(--space-1) var(--space-3);
+  border: var(--border-width) solid var(--color-border);
+  border-radius: var(--radius-full);
+  color: var(--color-o);
+  font-size: var(--text-sm);
+}
+
+/*
+  Wide screens with a mouse: the pictures float around the sky as small
+  round planets, at the spots in SKY (NasaPage.tsx). Hovering one grows it
+  back into its full card. Everywhere else the cards stay a simple list.
+*/
+@media (min-width: 62.5rem) and (hover: hover) {
+  .page {
+    max-inline-size: none;
+    padding-inline: var(--space-8);
+  }
+
+  .grid {
+    display: block;
+    position: relative;
+    block-size: max(34rem, 100vh - 16rem);
+  }
+
+  .grid > li {
+    /* Half the image's height: the planet is a circle around its centre. */
+    --half: 5.625rem;
+    --cy: var(--half);
+
+    position: absolute;
+    inset-block-start: calc(var(--y) - var(--half));
+    inset-inline-start: clamp(0rem, var(--x) - 10rem, 100% - 20rem);
+    inline-size: 20rem;
+    /* Only the visible planet, or the open card, reacts to the mouse. */
+    pointer-events: none;
+    filter: drop-shadow(0 0 1rem color-mix(in srgb, var(--color-accent) 40%, transparent));
+    animation: float 7s ease-in-out var(--delay) infinite;
+  }
+
+  /* The lower ones open upwards, so they stay on the screen. */
+  .grid > .lower {
+    --cy: calc(100% - var(--half));
+
+    inset-block: auto calc(100% - var(--y) - var(--half));
+  }
+
+  .lower .card {
+    display: flex;
+    flex-direction: column-reverse;
+  }
+
+  .grid > li:hover,
+  .grid > li:focus-within {
+    z-index: 1;
+    animation-play-state: paused;
+  }
+
+  .card {
+    pointer-events: auto;
+    transform: scale(var(--scale));
+    transform-origin: 50% var(--cy);
+    clip-path: circle(var(--half) at 50% var(--cy));
+    transition:
+      transform 450ms var(--ease-out),
+      clip-path 450ms var(--ease-out);
+  }
+
+  li:hover > .card,
+  li:focus-within > .card {
+    transform: none;
+    clip-path: circle(150% at 50% var(--cy));
+  }
+
+  .image {
+    aspect-ratio: auto;
+    block-size: calc(2 * var(--half));
+  }
+}
+
+@keyframes float {
+  50% {
+    translate: 0 -0.75rem;
+  }
+}

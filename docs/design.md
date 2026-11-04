@@ -97,3 +97,22 @@ result and the date, so `games` could have just a `result` column. I save
 checked again with the same functions in `shared/game/`, and the page can draw
 each saved game as a small board. Saving only the result would mean that a game,
 once saved, can never be checked or shown again.
+
+## What changed and why
+
+- **A different NASA API.** NASA moved APOD to science.nasa.gov, and the old
+  `api.nasa.gov/planetary/apod` now answers every date with a placeholder (the
+  NASA logo and the title "NASA Science"). The server uses NASA's new APOD API,
+  `science.nasa.gov/wp-json/wp/v2/apod-basic`, which api.nasa.gov now points to.
+  It needs no key, it has no "random" option, and its text is HTML. So the
+  server picks random dates, asks for each one, and turns the HTML into plain
+  text.
+- **10 pictures, not 20.** One request per picture, so 10 is enough, and it
+  still fits "up to 20 at a time". `GET /api/nasa/pictures` now answers
+  `{ date, title, explanation, url, credit }`, where `url` is a resized image.
+- **Several Gemini models.** Flash models are often overloaded (`503`), each at
+  a different time. The server tries a short list of Flash models in order, and
+  answers `502` only if none of them answer.
+- **Saving the explanation can fail without failing the request.** If the insert
+  into `apod_explanations` fails, the server still answers `200` with Gemini's
+  answer, because it already paid for it. It is only not cached.
