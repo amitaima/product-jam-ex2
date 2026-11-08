@@ -1,3 +1,230 @@
+/* --f is 0 at 440px wide and 1px at 1512px: calc(14px + 10 * var(--f)) runs 14px -> 24px. */
+
+.page {
+  --f: clamp(0px, (100vw - 440px) / 1072, 1px);
+  --inset: calc(29px + 53 * var(--f));
+  --bar: calc(25px + 29 * var(--f));
+  --blue: #b8d2ff;
+
+  /* The kit's Button reads these, so it takes the design's font and purple.
+     Futura is built into Macs and iPhones. Elsewhere, Jost looks the closest. */
+  --font-body: Futura, Jost, sans-serif;
+  --color-text: #000;
+  --color-accent: #9995ff;
+  --color-text-on-accent: #000;
+  --color-accent-hover: color-mix(in oklab, var(--color-accent), #000 15%);
+  --color-accent-active: color-mix(in oklab, var(--color-accent), #000 28%);
+
+  display: flex;
+  flex-direction: column;
+  gap: calc(40px + 40 * var(--f));
+  max-inline-size: none;
+  padding: calc(16px + 20 * var(--f)) calc(14px + 10 * var(--f));
+  background-color: #fff;
+  color: #000;
+  font-family: var(--font-body);
+  font-weight: 500;
+}
+
+.hero {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: calc(30px + 6 * var(--f));
+}
+
+.small,
+.label,
+.lead {
+  font-size: calc(14px + 10 * var(--f));
+}
+
+.logo,
+.label,
+.menuItem,
+.email,
+.brand {
+  letter-spacing: 0.07em;
+}
+
+.logo {
+  font-size: calc(32px + 32 * var(--f));
+}
+
+.art {
+  inline-size: calc(276px + 207 * var(--f));
+}
+
+.title,
+.heading {
+  font-size: calc(28px + 22 * var(--f));
+  line-height: 1.1;
+}
+
 .title {
-  font-size: var(--text-3xl);
+  align-self: stretch;
+  margin-block-start: calc(12px + 40 * var(--f));
+  padding-inline: var(--inset);
+  font-family: inherit;
+  font-weight: 700;
+}
+
+.heading,
+.features h3 {
+  font-family: inherit;
+  font-stretch: condensed;
+  font-weight: 800;
+}
+
+.heading {
+  margin-block-end: calc(8px + 16 * var(--f));
+  padding-inline: var(--inset);
+}
+
+.lead {
+  min-block-size: 118px;
+  /* Sits right under the title, so it takes back most of the page gap. */
+  margin-block-start: calc(-40px - 25 * var(--f));
+  /* The text wraps like the design: 285px wide on a phone, 631px on desktop. */
+  padding: 8px max(var(--inset), 100% - var(--inset) - 285px - 346 * var(--f)) 8px var(--inset);
+  background-color: var(--blue);
+}
+
+.songs {
+  display: grid;
+  gap: 20px 10%;
+  padding: 0 calc(84 * var(--f));
+  list-style: none;
+  font-family: Inter, system-ui, sans-serif;
+  font-size: calc(14px + 2 * var(--f));
+}
+
+.songs li {
+  display: flex;
+  margin: 0;
+  align-items: center;
+  gap: 7px;
+}
+
+.cover {
+  inline-size: calc(44px + 68 * var(--f));
+  aspect-ratio: 7 / 6;
+  background-color: #d9d9d9;
+}
+
+.song {
+  flex: 1;
+}
+
+.play {
+  border-radius: var(--radius-full);
+}
+
+.mission {
+  padding-inline: calc(var(--inset) - var(--bar)) var(--inset);
+  border-inline-start: var(--bar) solid var(--blue);
+  font-size: calc(21px + 19 * var(--f));
+}
+
+.mission .heading {
+  padding-inline: 0;
+}
+
+.shop {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1px;
+  padding: 0;
+  list-style: none;
+  background-color: #000;
+}
+
+.shop li {
+  margin: 0;
+  aspect-ratio: 6 / 5;
+  background-color: #fff999;
+}
+
+.features {
+  display: grid;
+  gap: calc(40px + 20 * var(--f));
+  padding-inline-start: 38px;
+  border-inline-start: var(--bar) solid var(--blue);
+  font-size: calc(14px + 26 * var(--f));
+}
+
+.features h3 {
+  font-size: calc(14px + 18 * var(--f));
+}
+
+.footer {
+  display: flex;
+  flex-direction: column;
+  min-block-size: calc(768px + 130 * var(--f));
+  padding: calc(40px + 20 * var(--f)) calc(12px + 57 * var(--f));
+  border-block-start: 1px solid #000;
+  background-color: var(--blue);
+}
+
+.label,
+.menuItem {
+  padding-inline: calc(37px - 13 * var(--f));
+}
+
+.footer nav {
+  display: flex;
+  flex-direction: column;
+  margin-block-start: 8px;
+}
+
+.menuItem {
+  justify-content: flex-start;
+  min-block-size: calc(50px + 7 * var(--f));
+  border-block-start: 1px solid #000;
+  border-radius: 0;
+  font-size: calc(28px + 12 * var(--f));
+  font-weight: 700;
+}
+
+.email {
+  margin-block-start: auto;
+  padding-block-end: 8px;
+  border-block-end: 1px solid #000;
+  font-size: 14px;
+}
+
+.brand {
+  font-size: min(71px, 16vw);
+  font-weight: 700;
+  line-height: 1.4;
+}
+
+@media (width >= 48rem) {
+  .songs {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .cover {
+    aspect-ratio: 1;
+  }
+
+  .song {
+    text-align: end;
+  }
+
+  .shop {
+    grid-template-columns: repeat(6, 1fr);
+  }
+
+  .features {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+/* The phone design shows fewer songs and shop cells. */
+@media (width < 48rem) {
+  .songs li:nth-child(n + 5),
+  .shop li:nth-child(n + 7) {
+    display: none;
+  }
 }
