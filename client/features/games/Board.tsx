@@ -2,9 +2,9 @@ import { SIZE, type Game, type Player } from "@shared/game/tictactoe";
 import { cx } from "../../lib/cx";
 import styles from "./Board.module.css";
 
-/** X is a star, O is a planet. */
+/** X is a star, O is a moon. */
 export function Mark({ player }: { player: Player }) {
-  return <span className={styles[player]}>{player === "X" ? "✦" : "◯"}</span>;
+  return <span className={styles[player]}>{player === "X" ? "✦" : "☾"}</span>;
 }
 
 const row = (cell: number) => Math.floor(cell / SIZE);

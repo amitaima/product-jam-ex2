@@ -1,5 +1,16 @@
-.logos {
-  display: flex;
+.parts {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
   gap: var(--space-4);
-  margin-block: var(--space-4);
+  padding: 0;
+  list-style: none;
+}
+
+.title {
+  font-size: var(--text-xl);
+}
+
+.text {
+  margin-block: var(--space-2) var(--space-4);
+  color: var(--color-text-muted);
 }
