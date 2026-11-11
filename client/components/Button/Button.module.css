@@ -34,7 +34,7 @@
 .button:disabled,
 .button[data-disabled] {
   cursor: not-allowed;
-  opacity: 0.55;
+  opacity: 0.50;
 }
 
 /* --- Sizes --- */
